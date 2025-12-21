@@ -8,14 +8,48 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject private var viewModel = WeatherViewModel()
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationView {
+            Group {
+                if viewModel.isLoading {
+                    ProgressView("Loading weather...")
+                } else {
+                    List(viewModel.weatherData) { weather in
+                        WeatherRowView(weather: weather)
+                    }
+                }
+            }
+            .navigationTitle("US Weather")
+            .task {
+                await viewModel.loadWeather()
+            }
         }
-        .padding()
+    }
+}
+
+struct WeatherRowView: View {
+    let weather: WeatherInfo
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(weather.city.name)
+                .font(.headline)
+            
+            if let temp = weather.currentTemperature {
+                Text("Current: \(temp)°F \(weather.currentCondition ?? "")")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            }
+            
+            if let firstForecast = weather.forecast.first {
+                Text("\(firstForecast.name): \(firstForecast.temperature)°F - \(firstForecast.shortForecast)")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+        }
+        .padding(.vertical, 4)
     }
 }
 
