@@ -38,13 +38,15 @@ struct WeatherRowView: View {
                 .font(.headline)
             
             if let temp = weather.currentTemperature {
-                Text("Current: \(temp)°F \(weather.currentCondition ?? "")")
+                let currentEmoji = WeatherEmoji.emoji(for: weather.currentCondition)
+                Text("\(currentEmoji) Current: \(temp)°F \(weather.currentCondition ?? "")")
                     .font(.subheadline)
                     .foregroundColor(.secondary)
             }
             
             if let firstForecast = weather.forecast.first {
-                Text("\(firstForecast.name): \(firstForecast.temperature)°F - \(firstForecast.shortForecast)")
+                let forecastEmoji = WeatherEmoji.emoji(for: firstForecast.shortForecast)
+                Text("\(forecastEmoji) \(firstForecast.name): \(firstForecast.temperature)°F - \(firstForecast.shortForecast)")
                     .font(.caption)
                     .foregroundColor(.secondary)
             }
