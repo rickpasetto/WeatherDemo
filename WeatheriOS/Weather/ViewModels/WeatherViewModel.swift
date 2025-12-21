@@ -12,10 +12,12 @@ import Combine
 class WeatherViewModel: ObservableObject {
     @Published var weatherData: [WeatherInfo] = []
     @Published var isLoading = false
+    @Published var isSearching = false
     @Published var errorMessage: String?
     
     private let weatherService = WeatherService()
-    private let cities: [City] = [
+    private let geocodingService = GeocodingService()
+    private var cities: [City] = [
         City(name: "New York", state: "NY", latitude: 40.7128, longitude: -74.0060),
         City(name: "Los Angeles", state: "CA", latitude: 34.0522, longitude: -118.2437),
         City(name: "Chicago", state: "IL", latitude: 41.8781, longitude: -87.6298),
@@ -45,6 +47,35 @@ class WeatherViewModel: ObservableObject {
         
         weatherData = results
         isLoading = false
+    }
+    
+    func addCity(name: String) async {
+        isSearching = true
+        errorMessage = nil
+        
+        defer {
+            isSearching = false
+        }
+        
+        do {
+            let city = try await geocodingService.geocode(cityName: name)
+            
+            guard !cities.contains(where: { $0.name.lowercased() == city.name.lowercased() }) else {
+                errorMessage = "City already in list"
+                return
+            }
+            
+            cities.append(city)
+            
+            do {
+                let weather = try await weatherService.fetchWeather(for: city)
+                weatherData.append(weather)
+            } catch {
+                errorMessage = "Failed to load weather for \(city.name): \(error.localizedDescription)"
+            }
+        } catch {
+            errorMessage = "Could not find city: \(error.localizedDescription)"
+        }
     }
 }
 

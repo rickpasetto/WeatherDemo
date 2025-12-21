@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @StateObject private var viewModel = WeatherViewModel()
+    @State private var searchText = ""
     
     var body: some View {
         NavigationView {
@@ -22,6 +23,33 @@ struct ContentView: View {
                 }
             }
             .navigationTitle("US Weather")
+            .searchable(text: $searchText, prompt: "Search for a city")
+            .onSubmit(of: .search) {
+                Task {
+                    await viewModel.addCity(name: searchText)
+                    searchText = ""
+                }
+            }
+            .overlay {
+                if viewModel.isSearching {
+                    ZStack {
+                        Color.black.opacity(0.3)
+                            .ignoresSafeArea()
+                        
+                        VStack(spacing: 16) {
+                            ProgressView()
+                                .scaleEffect(1.5)
+                            Text("Searching for city...")
+                                .font(.headline)
+                                .foregroundColor(.primary)
+                        }
+                        .padding(24)
+                        .background(Color(.systemBackground))
+                        .cornerRadius(12)
+                        .shadow(radius: 10)
+                    }
+                }
+            }
             .task {
                 await viewModel.loadWeather()
             }
