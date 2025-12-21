@@ -34,8 +34,15 @@ struct WeatherRowView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(weather.city.name)
-                .font(.headline)
+            HStack {
+                Text(weather.city.name)
+                    .font(.headline)
+                if let state = weather.city.state {
+                    Text(state)
+                        .font(.headline)
+                        .foregroundColor(.secondary)
+                }
+            }
             
             if let temp = weather.currentTemperature {
                 let currentEmoji = WeatherEmoji.emoji(for: weather.currentCondition)
