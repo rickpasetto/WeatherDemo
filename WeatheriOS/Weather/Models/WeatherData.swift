@@ -67,4 +67,3 @@ struct ObservationProperties: Codable {
 struct TemperatureValue: Codable {
     let value: Double?
 }
-
