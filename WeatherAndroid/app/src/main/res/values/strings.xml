@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">US Weather</string>
+    <string name="loading_weather">Loading weather…</string>
+    <string name="searching_city">Searching for city…</string>
+    <string name="search_city">Search for a city</string>
+    <string name="current">Current</string>
+</resources>
+
