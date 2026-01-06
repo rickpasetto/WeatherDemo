@@ -14,16 +14,23 @@ data class ForecastPeriod(
     val id: String = UUID.randomUUID().toString(),
     val name: String,
     val temperature: Int,
+    val temperatureUnit: String,
     val shortForecast: String
 )
 
 data class ForecastPeriodDTO(
     val name: String,
     val temperature: Int,
+    val temperatureUnit: String,
     val shortForecast: String
 ) {
     fun toForecastPeriod(): ForecastPeriod {
-        return ForecastPeriod(name = name, temperature = temperature, shortForecast = shortForecast)
+        return ForecastPeriod(
+            name = name,
+            temperature = temperature,
+            temperatureUnit = temperatureUnit,
+            shortForecast = shortForecast
+        )
     }
 }
 

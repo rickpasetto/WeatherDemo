@@ -85,6 +85,7 @@ export async function fetchWeather(city) {
       id: `${city.id}-${i}`,
       name: p.name,
       temperature: p.temperature,
+      temperatureUnit: p.temperatureUnit,
       shortForecast: p.shortForecast,
     })),
   };

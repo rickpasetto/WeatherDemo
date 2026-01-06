@@ -9,6 +9,10 @@ object TemperatureConverter {
         return celsius * 9.0 / 5.0 + 32.0
     }
     
+    fun fahrenheitToCelsius(fahrenheit: Int): Double {
+        return (fahrenheit - 32.0) * 5.0 / 9.0
+    }
+    
     fun formatTemperature(celsius: Int, locale: Locale): String {
         val usesFahrenheit = getUsesFahrenheit(locale)
         
@@ -23,6 +27,24 @@ object TemperatureConverter {
         val unit = if (usesFahrenheit) "°F" else "°C"
         
         return "${formatter.format(temperature)}$unit"
+    }
+    
+    fun formatTemperatureWithUnit(temperature: Int, temperatureUnit: String, locale: Locale): String {
+        val usesFahrenheit = getUsesFahrenheit(locale)
+        val isInputFahrenheit = temperatureUnit.uppercase() == "F"
+        
+        val convertedTemperature = when {
+            isInputFahrenheit && usesFahrenheit -> temperature.toDouble()
+            isInputFahrenheit && !usesFahrenheit -> fahrenheitToCelsius(temperature)
+            !isInputFahrenheit && usesFahrenheit -> celsiusToFahrenheit(temperature)
+            else -> temperature.toDouble()
+        }
+        
+        val formatter = NumberFormat.getNumberInstance(locale)
+        formatter.maximumFractionDigits = 0
+        val unit = if (usesFahrenheit) "°F" else "°C"
+        
+        return "${formatter.format(convertedTemperature)}$unit"
     }
     
     private fun getUsesFahrenheit(locale: Locale): Boolean {

@@ -53,7 +53,7 @@ fun WeatherRow(weather: WeatherInfo) {
         weather.forecast.firstOrNull()?.let { firstForecast ->
             val forecastEmoji = WeatherEmoji.emoji(firstForecast.shortForecast)
             Text(
-                text = "$forecastEmoji ${firstForecast.name}: ${TemperatureConverter.formatTemperature(firstForecast.temperature, locale)} - ${firstForecast.shortForecast}",
+                text = "$forecastEmoji ${firstForecast.name}: ${TemperatureConverter.formatTemperatureWithUnit(firstForecast.temperature, firstForecast.temperatureUnit, locale)} - ${firstForecast.shortForecast}",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
             )
