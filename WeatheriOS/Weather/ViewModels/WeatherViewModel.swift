@@ -65,11 +65,11 @@ class WeatherViewModel: ObservableObject {
                 return
             }
             
-            cities.append(city)
+            cities.insert(city, at: 0)
             
             do {
                 let weather = try await weatherService.fetchWeather(for: city)
-                weatherData.append(weather)
+                weatherData.insert(weather, at: 0)
             } catch {
                 errorMessage = "Failed to load weather for \(city.name): \(error.localizedDescription)"
             }
