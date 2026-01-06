@@ -76,11 +76,11 @@ class WeatherViewModel(
                     return@launch
                 }
                 
-                cities.add(city)
+                cities.add(0, city)
                 
                 try {
                     val weather = weatherService.fetchWeather(city)
-                    _weatherData.value = _weatherData.value + weather
+                    _weatherData.value = listOf(weather) + _weatherData.value
                 } catch (e: Exception) {
                     _errorMessage.value = "Failed to load weather for ${city.name}: ${e.message}"
                 }

@@ -73,4 +73,3 @@ data class StationFeature(
 data class StationProperties(
     val stationIdentifier: String
 )
-

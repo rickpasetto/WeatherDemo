@@ -9,4 +9,3 @@ data class City(
     val latitude: Double,
     val longitude: Double
 )
-
