@@ -20,21 +20,11 @@ fun WeatherRow(weather: WeatherInfo) {
             .padding(vertical = 4.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Row {
-            Text(
-                text = weather.city.name,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
-            )
-            weather.city.state?.let { state ->
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = state,
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-                )
-            }
-        }
+        Text(
+            text = weather.city.name,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold
+        )
         
         val configuration = LocalConfiguration.current
         val locale = configuration.locales[0]
